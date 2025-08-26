@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Molona · Landing minimalista</title>
+  <meta name="description" content="Una landing page moderna y minimalista, hecha en una sola hoja con HTML, CSS y un toque de JS." />
+  <style>
+    :root{
+      --bg: #0b0f1a;
+      --card: rgba(255,255,255,.06);
+      --card-strong: rgba(255,255,255,.10);
+      --text: #e8ecf1;
+      --muted: #aab4c0;
+      --brand: #6ee7ff;
+      --brand-2: #a78bfa;
+      --ok: #34d399;
+      --warn: #fbbf24;
+      --danger: #f87171;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 85% -10%, rgba(167,139,250,.25), transparent 60%),
+        radial-gradient(900px 600px at -10% 20%, rgba(110,231,255,.25), transparent 60%),
+        linear-gradient(180deg, #0b0f1a 0%, #0a0c14 100%);
+      background-attachment: fixed;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+
+    /* NAV */
+    .nav{
+      position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.2) blur(10px);
+      background:linear-gradient(to bottom, rgba(11,15,26,.85), rgba(11,15,26,.45));
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .nav-inner{display:flex;align-items:center;gap:18px;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:700}
+    .logo{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:var(--shadow)}
+    .nav a.btn{padding:10px 14px;border-radius:12px;background:var(--card);border:1px solid rgba(255,255,255,.08)}
+    .nav a.btn:hover{background:var(--card-strong)}
+
+    /* HERO */
+    .hero{padding:72px 0 36px}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;color:var(--muted)}
+    .title{font-size: clamp(32px, 6vw, 54px); line-height:1.05; letter-spacing:-.02em; margin:14px 0}
+    .title .grad{background:linear-gradient(90deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{color:var(--muted);max-width:50ch}
+    .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      box-shadow:var(--shadow);cursor:pointer;transition:transform .08s ease, box-shadow .2s ease, background .2s ease
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:linear-gradient(135deg, rgba(110,231,255,.25), rgba(167,139,250,.25)); border-color: rgba(255,255,255,.15)}
+    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:26px}
+    .kpi{background:var(--card);border:1px solid rgba(255,255,255,.08);padding:14px;border-radius:14px;text-align:center}
+    .kpi strong{font-size:22px}
+    .mock{
+      background:var(--card);border:1px solid rgba(255,255,255,.10);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)
+    }
+    .screen{
+      aspect-ratio: 4 / 3; border-radius:12px; background:radial-gradient(800px 400px at 80% 10%, rgba(110,231,255,.35), transparent 60%), #0e1422;
+      border:1px solid rgba(255,255,255,.08); position:relative; overflow:hidden
+    }
+    .orbit{position:absolute; inset:-20%; border-radius:50%; border:1px dashed rgba(255,255,255,.08); animation:spin 18s linear infinite}
+    .dot{position:absolute;width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow:0 0 16px rgba(167,139,250,.6)}
+    .dot.a{top:10%; left:30%}
+    .dot.b{bottom:15%; right:25%}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* FEATURES */
+    .section{padding:56px 0}
+    .section h2{font-size: clamp(24px, 4.5vw, 36px); margin:0 0 8px}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:16px}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .chip{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:12px;color:var(--muted)}
+
+    /* SHOWCASE */
+    .showcase{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+    .showcase .shot{height:220px;border-radius:14px;background:linear-gradient(135deg, rgba(110,231,255,.20), rgba(167,139,250,.20)), url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22200%22><text x=%228%22 y=%2280%22 font-size=%2240%22 fill=%22%23b8c2cc%22>Tu captura aquí</text></svg>') center/cover; border:1px solid rgba(255,255,255,.10)}
+
+    /* PRICING */
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .price-card{position:relative}
+    .badge{position:absolute;top:-10px;right:12px;font-size:12px;padding:6px 10px;border-radius:999px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#081018;box-shadow:var(--shadow)}
+    .price{font-size:36px;font-weight:800}
+    .ul{margin:0;padding:0;list-style:none}
+    .ul li{display:flex;gap:8px;align-items:flex-start;margin:8px 0;color:var(--muted)}
+    .ul .dot{flex:0 0 8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+
+    /* FAQ */
+    .faq{max-width:850px;margin:0 auto}
+    details{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px}
+    details+details{margin-top:10px}
+    summary{cursor:pointer;font-weight:600}
+
+    /* FOOTER */
+    footer{padding:36px 0;color:var(--muted)}
+
+    /* RESPONSIVE */
+    @media (max-width: 930px){
+      .hero-grid{grid-template-columns:1fr}
+      .kpis{grid-template-columns:1fr 1fr}
+      .showcase{grid-template-columns:1fr}
+      .grid.cols-3{grid-template-columns:1fr 1fr}
+      .pricing{grid-template-columns:1fr}
+    }
+    @media (max-width: 540px){
+      .kpis{grid-template-columns:1fr}
+      .grid.cols-3{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#"><span class="logo"></span> Molona</a>
+      <div style="display:flex; gap:10px; align-items:center">
+        <a class="btn" href="#precios">Precios</a>
+        <a class="btn" href="#faq">FAQ</a>
+        <a class="btn primary" href="#demo">Probar demo</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="container hero" id="inicio">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">✨ Nuevo · Súper ligero</span>
+        <h1 class="title">Una landing <span class="grad">molona</span> para validar tu idea</h1>
+        <p class="lead">Construida con HTML + CSS vanilla y un toque de JS. Carga rápida, accesible y lista para personalizar. Perfecta para MVPs, proyectos personales o hackathons.</p>
+        <div class="cta">
+          <a class="btn primary" href="#precios">Empezar gratis</a>
+          <a class="btn" href="#caracteristicas">Ver características</a>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><div>⏱️</div><strong><span id="kpi-1">48ms</span></strong><div class="muted">TTFB de referencia</div></div>
+          <div class="kpi"><div>⚙️</div><strong>100</strong><div class="muted">Puntuación Lighthouse</div></div>
+          <div class="kpi"><div>🧩</div><strong>0 deps</strong><div class="muted">Solo HTML/CSS/JS</div></div>
+        </div>
+      </div>
+      <div class="mock">
+        <div class="screen">
+          <div class="orbit"></div>
+          <span class="dot a"></span>
+          <span class="dot b"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section class="section" id="caracteristicas">
+    <div class="container">
+      <h2>Características sin complicaciones</h2>
+      <p class="muted">Diseñada para editarse rápido y desplegarse en cualquier hosting estático.</p>
+      <div class="grid cols-3" style="margin-top:14px">
+        <article class="card"><span class="chip">Rápida</span><h3>Rendimiento top</h3><p>Sin frameworks pesados; solo lo esencial para que todo vuele.</p></article>
+        <article class="card"><span class="chip">Accesible</span><h3>Colores y contrastes</h3><p>Paleta oscura con suficiente contraste y tamaños de letra cómodos.</p></article>
+        <article class="card"><span class="chip">Responsive</span><h3>Se adapta a todo</h3><p>Diseño fluido desde móviles a pantallas grandes, sin media queries complejas.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOWCASE -->
+  <section class="section">
+    <div class="container">
+      <div class="showcase">
+        <div class="card shot"></div>
+        <div class="card shot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section" id="precios">
+    <div class="container">
+      <h2>Planes y precios</h2>
+      <p class="muted">Empieza gratis. Actualiza cuando lo necesites.</p>
+      <div class="pricing" style="margin-top:14px">
+        <article class="card price-card">
+          <span class="badge">Popular</span>
+          <h3>Starter</h3>
+          <div class="price">0€<span class="muted" style="font-size:14px">/para siempre</span></div>
+          <ul class="ul">
+            <li><span class="dot"></span>Plantilla completa</li>
+            <li><span class="dot"></span>Actualizaciones básicas</li>
+            <li><span class="dot"></span>Uso personal</li>
+          </ul>
+          <div class="cta" style="margin-top:10px"><a class="btn primary" href="#">Usar</a></div>
+        </article>
+        <article class="card price-card">
+          <h3>Pro</h3>
+          <div class="price">9€<span class="muted" style="font-size:14px">/mes</span></div>
+          <ul class="ul">
+            <li><span class="dot"></span>Soporte prioritario</li>
+            <li><span class="dot"></span>Secciones extra</li>
+            <li><span class="dot"></span>Licencia comercial</li>
+          </ul>
+          <div class="cta" style="margin-top:10px"><a class="btn primary" href="#">Probar 7 días</a></div>
+        </article>
+        <article class="card price-card">
+          <h3>Equipo</h3>
+          <div class="price">29€<span class="muted" style="font-size:14px">/mes</span></div>
+          <ul class="ul">
+            <li><span class="dot"></span>Colaboración</li>
+            <li><span class="dot"></span>Exportación avanzada</li>
+            <li><span class="dot"></span>Integraciones</li>
+          </ul>
+          <div class="cta" style="margin-top:10px"><a class="btn primary" href="#">Empezar</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="container faq">
+      <h2>Preguntas frecuentes</h2>
+      <details>
+        <summary>¿Puedo cambiar colores y tipografías?</summary>
+        <p>Claro. Edita las variables CSS en <code>:root</code> o añade tu fuente favorita.</p>
+      </details>
+      <details>
+        <summary>¿Cómo lo despliego?</summary>
+        <p>Al ser estático, puedes subirlo tal cual a cualquier hosting (Netlify, Vercel, GitHub Pages, etc.).</p>
+      </details>
+      <details>
+        <summary>¿Puedo usarlo para clientes?</summary>
+        <p>Sí, con el plan Pro o superior tienes licencia comercial.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <div>© <span id="year"></span> Molona. Hecho con ♥︎ en la Web.</div>
+      <div><a href="#">Privacidad</a> · <a href="#">Términos</a></div>
+    </div>
+  </footer>
+
+  <script>
+    // JS mínimo: año dinámico y pequeña animación de contadores
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const animateNumber = (el, to, duration=900) => {
+      const from = 0;
+      const start = performance.now();
+      const step = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const v = Math.round(from + (to - from) * (p * (2 - p))); // ease-out
+        el.textContent = v + 'ms';
+        if (p < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+
+    const kpi = document.getElementById('kpi-1');
+    const target = parseInt(kpi.textContent);
+    const onVisible = (entries, observer) => {
+      entries.forEach(e => {
+        if (e.isIntersecting){ animateNumber(kpi, target); observer.disconnect(); }
+      })
+    };
+    new IntersectionObserver(onVisible, {threshold:.6}).observe(kpi);
+  </script>
+</body>
+</html>
